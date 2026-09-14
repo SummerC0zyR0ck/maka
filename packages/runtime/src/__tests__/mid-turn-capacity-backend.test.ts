@@ -1326,7 +1326,6 @@ function defineMidTurnSuite(consumer: ConsumerMode): void {
     assert.deepEqual(note?.data, {
       inputTokens: 3_716,
       priorInputTokens: 3_716,
-      contextWindowDeclared: false,
     });
   });
 
@@ -1410,7 +1409,6 @@ function defineMidTurnSuite(consumer: ConsumerMode): void {
     assert.deepEqual(note?.data, {
       inputTokens: 100,
       priorInputTokens: 100,
-      contextWindowDeclared: true,
     });
   });
 
@@ -1430,7 +1428,6 @@ function defineMidTurnSuite(consumer: ConsumerMode): void {
     assert.deepEqual(note?.data, {
       inputTokens: 50,
       priorInputTokens: 100,
-      contextWindowDeclared: true,
     });
   });
 

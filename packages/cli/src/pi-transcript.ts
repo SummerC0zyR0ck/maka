@@ -1355,24 +1355,13 @@ function systemNoteText(message: SystemNoteMessage): string | undefined {
       return 'Context summary failed; the session continued without a new summary.';
     case 'context_provider_dropping': {
       const data = message.data as
-        | { inputTokens?: unknown; priorInputTokens?: unknown; contextWindowDeclared?: unknown }
+        | { inputTokens?: unknown; priorInputTokens?: unknown }
         | undefined;
       const used = typeof data?.inputTokens === 'number' ? data.inputTokens : undefined;
       const prior = typeof data?.priorInputTokens === 'number' ? data.priorInputTokens : undefined;
-      const declared =
-        typeof data?.contextWindowDeclared === 'boolean' ? data.contextWindowDeclared : undefined;
       if (used === undefined || prior === undefined)
-        return declared === true
-          ? 'The provider is dropping or rewriting context, but a context window is already declared for this model; Maka will compact first.'
-          : declared === false
-            ? 'The provider is dropping or rewriting context: content was appended but its reported usage did not grow. Declare a context window for this model so Maka compacts first.'
-            : 'The provider is dropping or rewriting context: content was appended but its reported usage did not grow.';
-      const detail = `The provider is dropping or rewriting context: content was appended, and it counted ${used} input tokens against ${prior} before, which is no growth.`;
-      return declared === true
-        ? `${detail} A context window is already declared for this model, so Maka will compact first.`
-        : declared === false
-          ? `${detail} Declare a context window for this model so Maka compacts first.`
-          : detail;
+        return "After content was appended, the provider-reported input token count did not grow; context may have been truncated or rewritten. If this persists, check that the model's actual context capacity and the connection settings agree.";
+      return `After content was appended, the provider-reported input token count did not grow; context may have been truncated or rewritten (${used} tokens versus ${prior} before). If this persists, check that the model's actual context capacity and the connection settings agree.`;
     }
     case 'context_overflow_after_compaction':
       return 'History was compacted and the provider still called this request too large. What remains also carries the system prompt, the tool schemas, the summary and the recent tail; shortening this message is the part you control.';

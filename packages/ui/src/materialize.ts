@@ -146,11 +146,10 @@ function systemNoteLabel(kind: string, data: unknown, locale: UiLocale): string 
   if (kind === "context_compacted") return copy.contextCompacted;
   if (kind === "context_compaction_failed_open") return copy.contextCompactionFailedOpen;
   if (kind === "context_provider_dropping") {
-    const dropping = data as { inputTokens?: unknown; priorInputTokens?: unknown; contextWindowDeclared?: unknown } | undefined;
+    const dropping = data as { inputTokens?: unknown; priorInputTokens?: unknown } | undefined;
     const used = typeof dropping?.inputTokens === "number" ? dropping.inputTokens : 0;
     const prior = typeof dropping?.priorInputTokens === "number" ? dropping.priorInputTokens : 0;
-    const declared = typeof dropping?.contextWindowDeclared === "boolean" ? dropping.contextWindowDeclared : undefined;
-    return copy.contextProviderDropping(used, prior, declared);
+    return copy.contextProviderDropping(used, prior);
   }
   if (kind === "context_overflow_after_compaction") return copy.contextOverflowAfterCompaction;
   if (kind === "context_reported_window_exceeded") {

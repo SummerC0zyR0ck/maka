@@ -54,7 +54,7 @@ function toolStatus(entry: MakaPiToolEntry | undefined): string | undefined {
 }
 
 describe('Maka Pi TUI transcript', () => {
-  test('renders provider dropping guidance from durable declaration state', () => {
+  test('renders neutral provider dropping guidance', () => {
     const state = createMakaPiTranscriptState();
     replaceTranscriptWithStoredMessages(state, [
       {
@@ -63,12 +63,12 @@ describe('Maka Pi TUI transcript', () => {
         turnId: 't1',
         ts: 1,
         kind: 'context_provider_dropping',
-        data: { inputTokens: 100, priorInputTokens: 100, contextWindowDeclared: true },
+        data: { inputTokens: 100, priorInputTokens: 100 },
       },
     ]);
     assert.match(
       renderMakaPiTranscript(state, meta(), 120).map(stripAnsi).join('\n'),
-      /already declared/,
+      /truncated or rewritten/,
     );
   });
 
