@@ -1559,6 +1559,13 @@ function registerHostClientIpc(
   const unsubscribeSessionCatalogChanges = client.subscribeSessionCatalogChanges(
     ({ sessionId }) => emitTargetSessionsChanged("updated", sessionId),
   );
+  const unsubscribeArtifactChanges = client.subscribeArtifactChanges((frame) => {
+    if (frame.reason === 'deleted') {
+      void managedArtifactPreview.revoke(scope.targetEpoch, frame.sessionId, frame.artifactId);
+    } else {
+      void managedArtifactPreview.releaseSession(scope.targetEpoch, frame.sessionId);
+    }
+  });
   const unsubscribeProjectCatalogChanges = client.subscribeProjectCatalogChanges(() => {
     sendToRenderer("projects:changed");
   });
@@ -1836,6 +1843,7 @@ function registerHostClientIpc(
     await managedArtifactPreview.closeScope(scope.targetEpoch);
     unsubscribeConnectionCatalogChanges();
     unsubscribeSessionCatalogChanges();
+    unsubscribeArtifactChanges();
     unsubscribeProjectCatalogChanges();
     unsubscribeScheduledTaskChanges();
     runtimePolicyTargets.delete(target);
