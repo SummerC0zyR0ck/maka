@@ -1909,6 +1909,7 @@ function registerHostClientIpc(
   });
   registerOnboardingIpc({ onboardingService, ipcMain: scopedIpc });
   registerTaskSubmissionReadinessIpc(taskSubmissionReadinessService, scopedIpc);
+  managedArtifactPreview.openScope(scope.targetEpoch);
   return async () => {
     unsubscribeConfigurationChanges();
     await managedArtifactPreview.closeScope(scope.targetEpoch);
