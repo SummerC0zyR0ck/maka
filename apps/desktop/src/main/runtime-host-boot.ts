@@ -1837,6 +1837,7 @@ function registerHostClientIpc(
   });
   registerOnboardingIpc({ onboardingService, ipcMain: scopedIpc });
   registerTaskSubmissionReadinessIpc(taskSubmissionReadinessService, scopedIpc);
+  managedArtifactPreview.openScope(scope.targetEpoch);
   return async () => {
     clientPluginTransport.release(client);
     unsubscribeConfigurationChanges();
