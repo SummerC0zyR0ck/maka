@@ -135,7 +135,7 @@ describe('Runtime Host bootstrap protocol', () => {
   });
 
   test('publishes a new compatibility epoch for Artifact invalidation frames', () => {
-    assert.ok(RUNTIME_HOST_COMPATIBILITY_EPOCH > 177);
+    assert.ok(RUNTIME_HOST_COMPATIBILITY_EPOCH > 183);
   });
 
   test('publishes a new compatibility epoch for mandatory submit Skill outcomes', () => {
